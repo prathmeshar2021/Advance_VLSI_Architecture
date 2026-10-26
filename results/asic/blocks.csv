@@ -1,0 +1,6 @@
+block,description,cells_area,area_um2_area,delay_ps_area,cells_delay,area_um2_delay,delay_ps_delay
+add_simd_rca,"SIMD adder, ripple carry",32,38.570,361.2,41,71.288,228.4
+add_simd_csel,"SIMD adder, carry select",46,45.486,283.8,58,88.312,175.2
+eq_simd,"SIMD equality comparator",13,17.290,102.3,46,68.894,91.4
+mult_simd_array,"SIMD multiplier, shift-add array",350,360.696,1459.7,647,736.820,922.5
+mult_simd_dadda,"SIMD multiplier, Dadda + Kogge-Stone",379,385.168,792.4,572,740.810,453.8

@@ -1,0 +1,9 @@
+variant,description,target,cells,area_um2,gate_equivalents,delay_ps,fmax_mhz
+1,"V1 naive behavioural",area,589,583.072,730.7,1056.4,946.6
+1,"V1 naive behavioural",delay,773,879.130,1101.7,535.3,1868.1
+2,"V2 shared behavioural",area,490,469.756,588.7,1075.0,930.2
+2,"V2 shared behavioural",delay,639,739.746,927.0,563.6,1774.4
+3,"V3 structural RCA + array",area,422,423.738,531.0,1549.8,645.2
+3,"V3 structural RCA + array",delay,726,785.498,984.3,945.7,1057.5
+4,"V4 structural CSel + Dadda",area,441,438.900,550.0,879.8,1136.6
+4,"V4 structural CSel + Dadda",delay,660,780.178,977.7,494.3,2022.9

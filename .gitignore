@@ -1,0 +1,25 @@
+# --- open-source flow artifacts -------------------------------------------
+build/
+*.vcd
+*.out
+*.vvp
+
+# --- Vivado ----------------------------------------------------------------
+vivado/simd_exec/
+*.jou
+*.log
+*.str
+.Xil/
+vivado_*.backup.jou
+vivado_*.backup.log
+xsim.dir/
+webtalk*.jou
+webtalk*.log
+usage_statistics_webtalk*
+hs_err_pid*.log
+
+# --- editors ---------------------------------------------------------------
+*.swp
+*~
+.vscode/
+.DS_Store

@@ -1,0 +1,534 @@
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2020  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.33 (git sha1 2584903a060)
+
+
+-- Running command `
+read_verilog /home/user/Advance_VLSI_Architecture/rtl/lib/adder_ks.v /home/user/Advance_VLSI_Architecture/rtl/lib/adder_rca.v              /home/user/Advance_VLSI_Architecture/rtl/lib/add_simd_csel.v /home/user/Advance_VLSI_Architecture/rtl/lib/add_simd_rca.v              /home/user/Advance_VLSI_Architecture/rtl/lib/eq_simd.v /home/user/Advance_VLSI_Architecture/rtl/lib/mult_simd_array.v              /home/user/Advance_VLSI_Architecture/rtl/lib/mult_simd_dadda.v /home/user/Advance_VLSI_Architecture/rtl/lib/prim.v
+read_verilog /home/user/Advance_VLSI_Architecture/rtl/simd_exec_v1_naive.v /home/user/Advance_VLSI_Architecture/rtl/simd_exec_v2_shared.v              /home/user/Advance_VLSI_Architecture/rtl/simd_exec_v3_struct_rca.v              /home/user/Advance_VLSI_Architecture/rtl/simd_exec_v4_struct_fast.v /home/user/Advance_VLSI_Architecture/rtl/simd_exec_top.v
+hierarchy -top simd_exec_top -chparam VARIANT 3
+flatten
+proc
+opt -full
+techmap
+opt -full
+abc -liberty /tmp/pdk/ng45.lib -script +strash;dch,-f;map,-a;topo;stime,-c
+opt_clean
+stat -liberty /tmp/pdk/ng45.lib
+' --
+
+1. Executing Verilog-2005 frontend: /home/user/Advance_VLSI_Architecture/rtl/lib/adder_ks.v
+Parsing Verilog input from `/home/user/Advance_VLSI_Architecture/rtl/lib/adder_ks.v' to AST representation.
+Generating RTLIL representation for module `\adder_ks'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /home/user/Advance_VLSI_Architecture/rtl/lib/adder_rca.v
+Parsing Verilog input from `/home/user/Advance_VLSI_Architecture/rtl/lib/adder_rca.v' to AST representation.
+Generating RTLIL representation for module `\adder_rca'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /home/user/Advance_VLSI_Architecture/rtl/lib/add_simd_csel.v
+Parsing Verilog input from `/home/user/Advance_VLSI_Architecture/rtl/lib/add_simd_csel.v' to AST representation.
+Generating RTLIL representation for module `\add_simd_csel'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /home/user/Advance_VLSI_Architecture/rtl/lib/add_simd_rca.v
+Parsing Verilog input from `/home/user/Advance_VLSI_Architecture/rtl/lib/add_simd_rca.v' to AST representation.
+Generating RTLIL representation for module `\add_simd_rca'.
+Successfully finished Verilog frontend.
+
+5. Executing Verilog-2005 frontend: /home/user/Advance_VLSI_Architecture/rtl/lib/eq_simd.v
+Parsing Verilog input from `/home/user/Advance_VLSI_Architecture/rtl/lib/eq_simd.v' to AST representation.
+Generating RTLIL representation for module `\eq_simd'.
+Successfully finished Verilog frontend.
+
+6. Executing Verilog-2005 frontend: /home/user/Advance_VLSI_Architecture/rtl/lib/mult_simd_array.v
+Parsing Verilog input from `/home/user/Advance_VLSI_Architecture/rtl/lib/mult_simd_array.v' to AST representation.
+Generating RTLIL representation for module `\mult_simd_array'.
+Successfully finished Verilog frontend.
+
+7. Executing Verilog-2005 frontend: /home/user/Advance_VLSI_Architecture/rtl/lib/mult_simd_dadda.v
+Parsing Verilog input from `/home/user/Advance_VLSI_Architecture/rtl/lib/mult_simd_dadda.v' to AST representation.
+Generating RTLIL representation for module `\mult_simd_dadda'.
+Successfully finished Verilog frontend.
+
+8. Executing Verilog-2005 frontend: /home/user/Advance_VLSI_Architecture/rtl/lib/prim.v
+Parsing Verilog input from `/home/user/Advance_VLSI_Architecture/rtl/lib/prim.v' to AST representation.
+Generating RTLIL representation for module `\fa'.
+Generating RTLIL representation for module `\ha'.
+Successfully finished Verilog frontend.
+
+9. Executing Verilog-2005 frontend: /home/user/Advance_VLSI_Architecture/rtl/simd_exec_v1_naive.v
+Parsing Verilog input from `/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v1_naive.v' to AST representation.
+Generating RTLIL representation for module `\simd_exec_v1_naive'.
+Successfully finished Verilog frontend.
+
+10. Executing Verilog-2005 frontend: /home/user/Advance_VLSI_Architecture/rtl/simd_exec_v2_shared.v
+Parsing Verilog input from `/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v2_shared.v' to AST representation.
+Generating RTLIL representation for module `\simd_exec_v2_shared'.
+Successfully finished Verilog frontend.
+
+11. Executing Verilog-2005 frontend: /home/user/Advance_VLSI_Architecture/rtl/simd_exec_v3_struct_rca.v
+Parsing Verilog input from `/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v3_struct_rca.v' to AST representation.
+Generating RTLIL representation for module `\simd_exec_v3_struct_rca'.
+Successfully finished Verilog frontend.
+
+12. Executing Verilog-2005 frontend: /home/user/Advance_VLSI_Architecture/rtl/simd_exec_v4_struct_fast.v
+Parsing Verilog input from `/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v4_struct_fast.v' to AST representation.
+Generating RTLIL representation for module `\simd_exec_v4_struct_fast'.
+Successfully finished Verilog frontend.
+
+13. Executing Verilog-2005 frontend: /home/user/Advance_VLSI_Architecture/rtl/simd_exec_top.v
+Parsing Verilog input from `/home/user/Advance_VLSI_Architecture/rtl/simd_exec_top.v' to AST representation.
+Generating RTLIL representation for module `\simd_exec_top'.
+Successfully finished Verilog frontend.
+
+14. Executing HIERARCHY pass (managing design hierarchy).
+Parameter \VARIANT = 3
+
+15. Executing AST frontend in derive mode using pre-parsed AST for module `\simd_exec_top'.
+Parameter \VARIANT = 3
+Generating RTLIL representation for module `$paramod\simd_exec_top\VARIANT=32'00000000000000000000000000000011'.
+
+15.1. Analyzing design hierarchy..
+Top module:  \simd_exec_top
+Used module:     \simd_exec_v3_struct_rca
+Used module:         \eq_simd
+Used module:         \mult_simd_array
+Used module:             \adder_rca
+Used module:                 \fa
+Used module:         \add_simd_rca
+Parameter \W = 4
+
+15.2. Executing AST frontend in derive mode using pre-parsed AST for module `\adder_rca'.
+Parameter \W = 4
+Generating RTLIL representation for module `$paramod\adder_rca\W=s32'00000000000000000000000000000100'.
+Parameter \W = 4
+Found cached RTLIL representation for module `$paramod\adder_rca\W=s32'00000000000000000000000000000100'.
+Parameter \W = 8
+
+15.3. Executing AST frontend in derive mode using pre-parsed AST for module `\adder_rca'.
+Parameter \W = 8
+Generating RTLIL representation for module `$paramod\adder_rca\W=s32'00000000000000000000000000001000'.
+Parameter \W = 8
+Found cached RTLIL representation for module `$paramod\adder_rca\W=s32'00000000000000000000000000001000'.
+Parameter \W = 8
+Found cached RTLIL representation for module `$paramod\adder_rca\W=s32'00000000000000000000000000001000'.
+Parameter \W = 8
+Found cached RTLIL representation for module `$paramod\adder_rca\W=s32'00000000000000000000000000001000'.
+Parameter \W = 8
+Found cached RTLIL representation for module `$paramod\adder_rca\W=s32'00000000000000000000000000001000'.
+Parameter \W = 8
+Found cached RTLIL representation for module `$paramod\adder_rca\W=s32'00000000000000000000000000001000'.
+Parameter \W = 8
+Found cached RTLIL representation for module `$paramod\adder_rca\W=s32'00000000000000000000000000001000'.
+
+15.4. Analyzing design hierarchy..
+Top module:  \simd_exec_top
+Used module:     \simd_exec_v3_struct_rca
+Used module:         \eq_simd
+Used module:         \mult_simd_array
+Used module:             $paramod\adder_rca\W=s32'00000000000000000000000000001000
+Used module:                 \fa
+Used module:         \add_simd_rca
+Used module:             $paramod\adder_rca\W=s32'00000000000000000000000000000100
+
+15.5. Analyzing design hierarchy..
+Top module:  \simd_exec_top
+Used module:     \simd_exec_v3_struct_rca
+Used module:         \eq_simd
+Used module:         \mult_simd_array
+Used module:             $paramod\adder_rca\W=s32'00000000000000000000000000001000
+Used module:                 \fa
+Used module:         \add_simd_rca
+Used module:             $paramod\adder_rca\W=s32'00000000000000000000000000000100
+Removing unused module `$paramod\simd_exec_top\VARIANT=32'00000000000000000000000000000011'.
+Removing unused module `\simd_exec_v4_struct_fast'.
+Removing unused module `\simd_exec_v2_shared'.
+Removing unused module `\simd_exec_v1_naive'.
+Removing unused module `\ha'.
+Removing unused module `\mult_simd_dadda'.
+Removing unused module `\add_simd_csel'.
+Removing unused module `\adder_rca'.
+Removing unused module `\adder_ks'.
+Removed 9 unused modules.
+
+16. Executing FLATTEN pass (flatten design).
+Deleting now unused module fa.
+Deleting now unused module simd_exec_v3_struct_rca.
+Deleting now unused module mult_simd_array.
+Deleting now unused module eq_simd.
+Deleting now unused module add_simd_rca.
+Deleting now unused module $paramod\adder_rca\W=s32'00000000000000000000000000001000.
+Deleting now unused module $paramod\adder_rca\W=s32'00000000000000000000000000000100.
+<suppressed ~25 debug messages>
+
+17. Executing PROC pass (convert processes to netlists).
+
+17.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+17.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $flatten\genblk1.genblk1.g_v3.u_dut.$proc$/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v3_struct_rca.v:49$394 in module simd_exec_top.
+Removed a total of 0 dead cases.
+
+17.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 1 assignment to connection.
+
+17.4. Executing PROC_INIT pass (extract init attributes).
+
+17.5. Executing PROC_ARST pass (detect async resets in processes).
+
+17.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~1 debug messages>
+
+17.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\simd_exec_top.$flatten\genblk1.genblk1.g_v3.u_dut.$proc$/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v3_struct_rca.v:49$394'.
+     1/1: $flatten\genblk1.genblk1.g_v3.u_dut.$1\cd[15:0]
+
+17.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\simd_exec_top.\genblk1.genblk1.g_v3.u_dut.cd' from process `\simd_exec_top.$flatten\genblk1.genblk1.g_v3.u_dut.$proc$/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v3_struct_rca.v:49$394'.
+
+17.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+17.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+17.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\simd_exec_top.$flatten\genblk1.genblk1.g_v3.u_dut.$proc$/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v3_struct_rca.v:49$394'.
+Removing empty process `simd_exec_top.$flatten\genblk1.genblk1.g_v3.u_dut.$proc$/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v3_struct_rca.v:49$394'.
+Cleaned up 1 empty switch.
+
+17.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module simd_exec_top.
+<suppressed ~29 debug messages>
+
+18. Executing OPT pass (performing simple optimizations).
+
+18.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module simd_exec_top.
+
+18.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\simd_exec_top'.
+<suppressed ~216 debug messages>
+Removed a total of 72 cells.
+
+18.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \simd_exec_top..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~1 debug messages>
+
+18.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \simd_exec_top.
+    Consolidated identical input bits for $mux cell $flatten\genblk1.genblk1.g_v3.u_dut.$ternary$/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v3_struct_rca.v:44$393:
+      Old ports: A={ 7'0000000 \genblk1.genblk1.g_v3.u_dut.eq_all }, B={ 3'000 \genblk1.genblk1.g_v3.u_dut.eq_hi 3'000 \genblk1.genblk1.g_v3.u_dut.eq_lo }, Y=$flatten\genblk1.genblk1.g_v3.u_dut.$ternary$/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v3_struct_rca.v:44$393_Y
+      New ports: A={ 1'0 $flatten\genblk1.genblk1.g_v3.u_dut.\u_eq.$and$/home/user/Advance_VLSI_Architecture/rtl/lib/eq_simd.v:20$162_Y }, B={ $flatten\genblk1.genblk1.g_v3.u_dut.\u_eq.$reduce_and$/home/user/Advance_VLSI_Architecture/rtl/lib/eq_simd.v:19$161_Y $flatten\genblk1.genblk1.g_v3.u_dut.\u_eq.$reduce_and$/home/user/Advance_VLSI_Architecture/rtl/lib/eq_simd.v:18$160_Y }, Y={ $flatten\genblk1.genblk1.g_v3.u_dut.$ternary$/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v3_struct_rca.v:44$393_Y [4] $flatten\genblk1.genblk1.g_v3.u_dut.$ternary$/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v3_struct_rca.v:44$393_Y [0] }
+      New connections: { $flatten\genblk1.genblk1.g_v3.u_dut.$ternary$/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v3_struct_rca.v:44$393_Y [7:5] $flatten\genblk1.genblk1.g_v3.u_dut.$ternary$/home/user/Advance_VLSI_Architecture/rtl/simd_exec_v3_struct_rca.v:44$393_Y [3:1] } = 6'000000
+  Optimizing cells in module \simd_exec_top.
+Performed a total of 1 changes.
+
+18.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\simd_exec_top'.
+Removed a total of 0 cells.
+
+18.6. Executing OPT_SHARE pass.
+
+18.7. Executing OPT_DFF pass (perform DFF optimizations).
+
+18.8. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \simd_exec_top..
+Removed 2 unused cells and 302 unused wires.
+<suppressed ~3 debug messages>
+
+18.9. Executing OPT_EXPR pass (perform const folding).
+Optimizing module simd_exec_top.
+<suppressed ~1 debug messages>
+
+18.10. Rerunning OPT passes. (Maybe there is more to do..)
+
+18.11. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \simd_exec_top..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~1 debug messages>
+
+18.12. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \simd_exec_top.
+Performed a total of 0 changes.
+
+18.13. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\simd_exec_top'.
+Removed a total of 0 cells.
+
+18.14. Executing OPT_SHARE pass.
+
+18.15. Executing OPT_DFF pass (perform DFF optimizations).
+
+18.16. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \simd_exec_top..
+
+18.17. Executing OPT_EXPR pass (perform const folding).
+Optimizing module simd_exec_top.
+
+18.18. Finished OPT passes. (There is nothing left to do.)
+
+19. Executing TECHMAP pass (map to technology primitives).
+
+19.1. Executing Verilog-2005 frontend: /usr/bin/../share/yosys/techmap.v
+Parsing Verilog input from `/usr/bin/../share/yosys/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `\$__div_mod_u'.
+Generating RTLIL representation for module `\$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `\$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_pmux'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Successfully finished Verilog frontend.
+
+19.2. Continuing TECHMAP pass.
+Using extmapper simplemap for cells of type $eq.
+Using template $paramod$d5c1c4131927aec19f116e7a36372b1981bfcd7e\_90_pmux for cells of type $pmux.
+Using extmapper simplemap for cells of type $logic_not.
+Using extmapper simplemap for cells of type $not.
+Using extmapper simplemap for cells of type $reduce_and.
+Using extmapper simplemap for cells of type $and.
+Using extmapper simplemap for cells of type $xor.
+Using extmapper simplemap for cells of type $or.
+Using extmapper simplemap for cells of type $mux.
+Using extmapper simplemap for cells of type $reduce_or.
+No more expansions possible.
+<suppressed ~498 debug messages>
+
+20. Executing OPT pass (performing simple optimizations).
+
+20.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module simd_exec_top.
+<suppressed ~65 debug messages>
+
+20.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\simd_exec_top'.
+<suppressed ~24 debug messages>
+Removed a total of 8 cells.
+
+20.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \simd_exec_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+20.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \simd_exec_top.
+Performed a total of 0 changes.
+
+20.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\simd_exec_top'.
+Removed a total of 0 cells.
+
+20.6. Executing OPT_SHARE pass.
+
+20.7. Executing OPT_DFF pass (perform DFF optimizations).
+
+20.8. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \simd_exec_top..
+Removed 0 unused cells and 80 unused wires.
+<suppressed ~1 debug messages>
+
+20.9. Executing OPT_EXPR pass (perform const folding).
+Optimizing module simd_exec_top.
+
+20.10. Rerunning OPT passes. (Maybe there is more to do..)
+
+20.11. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \simd_exec_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+20.12. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \simd_exec_top.
+Performed a total of 0 changes.
+
+20.13. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\simd_exec_top'.
+Removed a total of 0 cells.
+
+20.14. Executing OPT_SHARE pass.
+
+20.15. Executing OPT_DFF pass (perform DFF optimizations).
+
+20.16. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \simd_exec_top..
+
+20.17. Executing OPT_EXPR pass (perform const folding).
+Optimizing module simd_exec_top.
+
+20.18. Finished OPT passes. (There is nothing left to do.)
+
+21. Executing ABC pass (technology mapping using ABC).
+
+21.1. Extracting gate netlist of module `\simd_exec_top' to `<abc-temp-dir>/input.blif'..
+Extracted 460 gates and 479 wires to a netlist network with 19 inputs and 16 outputs.
+
+21.1.1. Executing ABC.
+Running ABC command: "<yosys-exe-dir>/yosys-abc" -s -f <abc-temp-dir>/abc.script 2>&1
+ABC: ABC command line: "source <abc-temp-dir>/abc.script".
+ABC: 
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_lib -w /tmp/pdk/ng45.lib 
+ABC: Parsing finished successfully.  Parsing time =     0.05 sec
+ABC: Scl_LibertyReadGenlib() skipped cell "ANTENNA_X1" due to dont_use attribute.
+ABC: Scl_LibertyReadGenlib() skipped cell "CLKGATETST_X1" without logic function.
+ABC: Scl_LibertyReadGenlib() skipped cell "CLKGATETST_X2" without logic function.
+ABC: Scl_LibertyReadGenlib() skipped cell "CLKGATETST_X4" without logic function.
+ABC: Scl_LibertyReadGenlib() skipped cell "CLKGATETST_X8" without logic function.
+ABC: Scl_LibertyReadGenlib() skipped cell "CLKGATE_X1" without logic function.
+ABC: Scl_LibertyReadGenlib() skipped cell "CLKGATE_X2" without logic function.
+ABC: Scl_LibertyReadGenlib() skipped cell "CLKGATE_X4" without logic function.
+ABC: Scl_LibertyReadGenlib() skipped cell "CLKGATE_X8" without logic function.
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "DFFRS_X1".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "DFFRS_X2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "DFFR_X1".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "DFFR_X2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "DFFS_X1".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "DFFS_X2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "DFF_X1".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "DFF_X2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "DLH_X1".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "DLH_X2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "DLL_X1".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "DLL_X2".
+ABC: Scl_LibertyReadGenlib() skipped cell "FILLCELL_X1" due to dont_use attribute.
+ABC: Scl_LibertyReadGenlib() skipped cell "FILLCELL_X2" due to dont_use attribute.
+ABC: Scl_LibertyReadGenlib() skipped cell "FILLCELL_X4" due to dont_use attribute.
+ABC: Scl_LibertyReadGenlib() skipped cell "FILLCELL_X8" due to dont_use attribute.
+ABC: Scl_LibertyReadGenlib() skipped cell "FILLCELL_X16" due to dont_use attribute.
+ABC: Scl_LibertyReadGenlib() skipped cell "FILLCELL_X32" due to dont_use attribute.
+ABC: Scl_LibertyReadGenlib() skipped cell "LOGIC0_X1" due to dont_use attribute.
+ABC: Scl_LibertyReadGenlib() skipped cell "LOGIC1_X1" due to dont_use attribute.
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "SDFFRS_X1".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "SDFFRS_X2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "SDFFR_X1".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "SDFFR_X2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "SDFFS_X1".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "SDFFS_X2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "SDFF_X1".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "SDFF_X2".
+ABC: Scl_LibertyReadGenlib() skipped three-state cell "TBUF_X1".
+ABC: Scl_LibertyReadGenlib() skipped three-state cell "TBUF_X2".
+ABC: Scl_LibertyReadGenlib() skipped three-state cell "TBUF_X4".
+ABC: Scl_LibertyReadGenlib() skipped three-state cell "TBUF_X8".
+ABC: Scl_LibertyReadGenlib() skipped three-state cell "TBUF_X16".
+ABC: Scl_LibertyReadGenlib() skipped three-state cell "TINV_X1".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "TLAT_X1".
+ABC: Library "NangateOpenCellLibrary" from "/tmp/pdk/ng45.lib" has 90 cells (35 skipped: 21 seq; 6 tri-state; 8 no func; 9 dont_use).  Time =     0.08 sec
+ABC: Memory =   11.38 MB. Time =     0.08 sec
+ABC: Warning: Detected 2 multi-output gates (for example, "FA_X1").
+ABC: + strash 
+ABC: + dch -f 
+ABC: + map -a 
+ABC: + topo 
+ABC: + stime -c 
+ABC: WireLoad = "5K_hvratio_1_1"  Gates =    422 ( 13.0 %)   Cap =  4.2 ff (  0.0 %)   Area =      423.74 (100.0 %)   Delay =  1549.84 ps  ( 39.6 %)               
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+21.1.2. Re-integrating ABC results.
+ABC RESULTS:           NOR4_X1 cells:        2
+ABC RESULTS:         OAI211_X1 cells:        1
+ABC RESULTS:          AOI22_X1 cells:        1
+ABC RESULTS:          NAND3_X1 cells:        3
+ABC RESULTS:         OAI221_X1 cells:        1
+ABC RESULTS:          OAI22_X1 cells:        7
+ABC RESULTS:           AND2_X1 cells:        6
+ABC RESULTS:           NOR3_X1 cells:       33
+ABC RESULTS:          XNOR2_X1 cells:        7
+ABC RESULTS:            INV_X1 cells:       55
+ABC RESULTS:           NOR2_X1 cells:       56
+ABC RESULTS:           XOR2_X1 cells:       87
+ABC RESULTS:          OAI21_X1 cells:       26
+ABC RESULTS:          NAND2_X1 cells:      130
+ABC RESULTS:          AOI21_X1 cells:        7
+ABC RESULTS:        internal signals:      444
+ABC RESULTS:           input signals:       19
+ABC RESULTS:          output signals:       16
+Removing temp directory.
+
+22. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \simd_exec_top..
+Removed 0 unused cells and 350 unused wires.
+<suppressed ~113 debug messages>
+
+23. Printing statistics.
+
+=== simd_exec_top ===
+
+   Number of wires:                720
+   Number of wire bits:           1185
+   Number of public wires:         314
+   Number of public wire bits:     779
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                422
+     AND2_X1                         6
+     AOI21_X1                        7
+     AOI22_X1                        1
+     INV_X1                         55
+     NAND2_X1                      130
+     NAND3_X1                        3
+     NOR2_X1                        56
+     NOR3_X1                        33
+     NOR4_X1                         2
+     OAI211_X1                       1
+     OAI21_X1                       26
+     OAI221_X1                       1
+     OAI22_X1                        7
+     XNOR2_X1                        7
+     XOR2_X1                        87
+
+   Chip area for module '\simd_exec_top': 423.738000
+
+End of script. Logfile hash: 24a4882046, CPU: user 0.45s system 0.01s, MEM: 29.65 MB peak
+Yosys 0.33 (git sha1 2584903a060)
+Time spent: 34% 1x abc (0 sec), 13% 1x stat (0 sec), ...
