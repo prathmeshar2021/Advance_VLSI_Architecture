@@ -16,14 +16,14 @@ import re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 APPENDIX = [
-    ("Top-level selector", "rtl/simd_exec_top.v"),
-    ("Shared design, behavioural (V2)", "rtl/simd_exec_v2_shared.v"),
-    ("Structural design, fast (V4)", "rtl/simd_exec_v4_struct_fast.v"),
+    ("Shared design, written with operators (V2)", "rtl/simd_exec_v2_shared.v"),
     ("Full adder and half adder", "rtl/lib/prim.v"),
-    ("SIMD adder, ripple carry", "rtl/lib/add_simd_rca.v"),
-    ("SIMD adder, carry select", "rtl/lib/add_simd_csel.v"),
+    ("Ripple-carry adder", "rtl/lib/adder_rca.v"),
+    ("Breakable SIMD adder", "rtl/lib/add_simd_rca.v"),
     ("Equality comparator", "rtl/lib/eq_simd.v"),
-    ("SIMD multiplier, shift-add array", "rtl/lib/mult_simd_array.v"),
+    ("SIMD multiplier (gated partial products)", "rtl/lib/mult_simd_array.v"),
+    ("Structural design that connects the blocks (V3)",
+     "rtl/simd_exec_v3_struct_rca.v"),
 ]
 
 
@@ -66,11 +66,15 @@ def main():
     with open(os.path.join(ROOT, "docs", "submission_body.md")) as f:
         body = f.read().rstrip("\n")
 
-    parts = [body, "", "## Appendix: Verilog source", ""]
-    parts.append("The code below is the design as synthesised. The Kogge-Stone "
-                 "adder and the Dadda-tree multiplier used by V4 are generated "
-                 "building blocks and are included in the submitted project "
-                 "files.")
+    parts = [body, "", "## Appendix: Verilog code", ""]
+    parts.append("The first module is the shared design written with the +, "
+                 "\\* and == operators (V2). The next modules are the "
+                 "gate-level building blocks, followed by the structural "
+                 "design that connects them (V3). The faster design (V4) "
+                 "replaces the ripple-carry adder with a carry-select adder "
+                 "and the array multiplier with a Dadda-tree multiplier; both "
+                 "use the same carry-breaking and cross-term gating shown "
+                 "here, and are standard structures.")
     parts.append("")
     for title, path in APPENDIX:
         parts.append("### %s" % title)

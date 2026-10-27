@@ -51,9 +51,12 @@ def patch_styles(text):
     for blue in ("345A8A", "365F91", "4F81BD"):
         text = text.replace('w:val="%s"' % blue, 'w:val="000000"')
 
-    # body default 12pt -> 11pt
-    text = text.replace('<w:sz w:val="24" />', '<w:sz w:val="22" />')
-    text = text.replace('<w:szCs w:val="24" />', '<w:szCs w:val="22" />')
+    # body stays at 12pt Times New Roman (Word's usual submission size)
+
+    # give the body Word-like 1.15 line spacing and 8pt paragraph spacing
+    text = text.replace(
+        '<w:spacing w:after="200" />',
+        '<w:spacing w:after="160" w:line="276" w:lineRule="auto" />')
 
     # code font stays monospaced: undo the serif substitution for the two
     # verbatim styles, and shrink them to 8pt

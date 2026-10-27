@@ -159,45 +159,11 @@ The packed-SIMD requirement can be met with very little extra hardware if it is 
 
 The Verilog source for the main design and the building blocks follows in the appendix.
 
-## Appendix: Verilog source
+## Appendix: Verilog code
 
-The code below is the design as synthesised. The Kogge-Stone adder and the Dadda-tree multiplier used by V4 are generated building blocks and are included in the submitted project files.
+The first module is the shared design written with the +, \* and == operators (V2). The next modules are the gate-level building blocks, followed by the structural design that connects them (V3). The faster design (V4) replaces the ripple-carry adder with a carry-select adder and the array multiplier with a Dadda-tree multiplier; both use the same carry-breaking and cross-term gating shown here, and are standard structures.
 
-### Top-level selector
-
-```verilog
-module simd_exec_top #(
-    parameter integer VARIANT = 4
-) (
-    input  wire [7:0] A,
-    input  wire [7:0] B,
-    input  wire [1:0] fn,     // 00 add, 01 multiply, 10 equality, 11 reserved
-    input  wire       size,   // 0 = one 8-bit operand, 1 = two packed 4-bit
-    output wire [7:0] C,
-    output wire [7:0] D
-);
-    generate
-        if (VARIANT == 1) begin : g_v1
-            simd_exec_v1_naive u_dut (
-                .A(A), .B(B), .fn(fn), .size(size), .C(C), .D(D));
-        end
-        else if (VARIANT == 2) begin : g_v2
-            simd_exec_v2_shared u_dut (
-                .A(A), .B(B), .fn(fn), .size(size), .C(C), .D(D));
-        end
-        else if (VARIANT == 3) begin : g_v3
-            simd_exec_v3_struct_rca u_dut (
-                .A(A), .B(B), .fn(fn), .size(size), .C(C), .D(D));
-        end
-        else begin : g_v4
-            simd_exec_v4_struct_fast u_dut (
-                .A(A), .B(B), .fn(fn), .size(size), .C(C), .D(D));
-        end
-    endgenerate
-endmodule
-```
-
-### Shared design, behavioural (V2)
+### Shared design, written with operators (V2)
 
 ```verilog
 module simd_exec_v2_shared (
@@ -254,56 +220,6 @@ module simd_exec_v2_shared (
 endmodule
 ```
 
-### Structural design, fast (V4)
-
-```verilog
-module simd_exec_v4_struct_fast (
-    input  wire [7:0] A,
-    input  wire [7:0] B,
-    input  wire [1:0] fn,
-    input  wire       size,
-    output wire [7:0] C,
-    output wire [7:0] D
-);
-    localparam [1:0] FN_ADD = 2'b00,
-                     FN_MUL = 2'b01,
-                     FN_EQ  = 2'b10;
-
-    wire [7:0]  add_res;
-    wire [15:0] prod;
-    wire        eq_lo, eq_hi, eq_all;
-
-    add_simd_csel u_add (
-        .a(A), .b(B), .size(size), .sum(add_res)
-    );
-
-    mult_simd_dadda u_mul (
-        .a(A), .b(B), .size(size), .p(prod)
-    );
-
-    eq_simd u_eq (
-        .a(A), .b(B), .eq_lo(eq_lo), .eq_hi(eq_hi), .eq_all(eq_all)
-    );
-
-    wire [7:0] eq_res = size ? {3'b0, eq_hi, 3'b0, eq_lo}
-                             : {7'b0,  eq_all};
-
-    reg [15:0] cd;
-
-    always @* begin
-        case (fn)
-            FN_ADD  : cd = {8'h00, add_res};
-            FN_MUL  : cd = prod;
-            FN_EQ   : cd = {8'h00, eq_res};
-            default : cd = 16'h0000;
-        endcase
-    end
-
-    assign C = cd[15:8];
-    assign D = cd[7:0];
-endmodule
-```
-
 ### Full adder and half adder
 
 ```verilog
@@ -331,7 +247,39 @@ module ha (
 endmodule
 ```
 
-### SIMD adder, ripple carry
+### Ripple-carry adder
+
+```verilog
+module adder_rca #(
+    parameter W = 8
+) (
+    input  wire [W-1:0] a,
+    input  wire [W-1:0] b,
+    input  wire         cin,
+    output wire [W-1:0] sum,
+    output wire         cout
+);
+    wire [W:0] c;
+    assign c[0] = cin;
+
+    genvar i;
+    generate
+        for (i = 0; i < W; i = i + 1) begin : g_bit
+            fa u_fa (
+                .a    (a[i]),
+                .b    (b[i]),
+                .cin  (c[i]),
+                .sum  (sum[i]),
+                .cout (c[i+1])
+            );
+        end
+    endgenerate
+
+    assign cout = c[W];
+endmodule
+```
+
+### Breakable SIMD adder
 
 ```verilog
 module add_simd_rca (
@@ -358,37 +306,6 @@ module add_simd_rca (
 endmodule
 ```
 
-### SIMD adder, carry select
-
-```verilog
-module add_simd_csel (
-    input  wire [7:0] a,
-    input  wire [7:0] b,
-    input  wire       size,
-    output wire [7:0] sum
-);
-    wire       c_lo;
-    wire [3:0] hi_c0, hi_c1;
-    wire       c_mid;
-
-    adder_ks #(.W(4)) u_lo (
-        .a(a[3:0]), .b(b[3:0]), .cin(1'b0),
-        .sum(sum[3:0]), .cout(c_lo)
-    );
-
-    // speculative high-nibble sums, computed in parallel with the low nibble
-    adder_ks #(.W(4)) u_hi0 (
-        .a(a[7:4]), .b(b[7:4]), .cin(1'b0), .sum(hi_c0), .cout()
-    );
-    adder_ks #(.W(4)) u_hi1 (
-        .a(a[7:4]), .b(b[7:4]), .cin(1'b1), .sum(hi_c1), .cout()
-    );
-
-    assign c_mid    = c_lo & ~size;
-    assign sum[7:4] = c_mid ? hi_c1 : hi_c0;
-endmodule
-```
-
 ### Equality comparator
 
 ```verilog
@@ -407,7 +324,7 @@ module eq_simd (
 endmodule
 ```
 
-### SIMD multiplier, shift-add array
+### SIMD multiplier (gated partial products)
 
 ```verilog
 module mult_simd_array (
@@ -465,5 +382,55 @@ module mult_simd_array (
     endgenerate
 
     assign p[15:8] = accf[7*9 + 1 +: 8];
+endmodule
+```
+
+### Structural design that connects the blocks (V3)
+
+```verilog
+module simd_exec_v3_struct_rca (
+    input  wire [7:0] A,
+    input  wire [7:0] B,
+    input  wire [1:0] fn,
+    input  wire       size,
+    output wire [7:0] C,
+    output wire [7:0] D
+);
+    localparam [1:0] FN_ADD = 2'b00,
+                     FN_MUL = 2'b01,
+                     FN_EQ  = 2'b10;
+
+    wire [7:0]  add_res;
+    wire [15:0] prod;
+    wire        eq_lo, eq_hi, eq_all;
+
+    add_simd_rca u_add (
+        .a(A), .b(B), .size(size), .sum(add_res)
+    );
+
+    mult_simd_array u_mul (
+        .a(A), .b(B), .size(size), .p(prod)
+    );
+
+    eq_simd u_eq (
+        .a(A), .b(B), .eq_lo(eq_lo), .eq_hi(eq_hi), .eq_all(eq_all)
+    );
+
+    wire [7:0] eq_res = size ? {3'b0, eq_hi, 3'b0, eq_lo}
+                             : {7'b0,  eq_all};
+
+    reg [15:0] cd;
+
+    always @* begin
+        case (fn)
+            FN_ADD  : cd = {8'h00, add_res};
+            FN_MUL  : cd = prod;
+            FN_EQ   : cd = {8'h00, eq_res};
+            default : cd = 16'h0000;
+        endcase
+    end
+
+    assign C = cd[15:8];
+    assign D = cd[7:0];
 endmodule
 ```
