@@ -6,13 +6,11 @@ MEL G624 Advanced VLSI Architectures, Assignment 2
 
 ## 1. My understanding and assumptions
 
-The specification leaves a few points open, so I state here how I read the problem and the choices I made before writing the Verilog.
+The specification leaves a few points open, so before writing the Verilog I set down here how I read the problem and the choices I made.
 
-**What is being built.** A data memory for a vector processor. One 32-bit word access (read or write) can be started every processor clock cycle, even though a single memory bank needs 6 clock cycles to finish an access. The way to hide the slow bank is to use several banks and spread the words across them, so that a stream of accesses keeps moving from one bank to the next instead of waiting on one.
+The system is a data memory for a vector processor. It must let the processor start one 32-bit word access (read or write) every clock cycle, even though a single memory bank needs 6 clock cycles to finish an access. The only way to hide a slow bank is to use several banks and spread the words across them, so that a run of accesses keeps moving from one bank to the next instead of waiting on one. There are eight banks. Each bank is word addressable, holds a 32-bit word per location, and takes a 10-bit address, so each bank has 1024 words and the whole memory has 8192 words, which is 32 KB. The processor gives a byte address; with 8192 words the word address is 13 bits and the byte address is 15 bits, and I take the bits above that to be zero.
 
-**Sizes.** Eight banks. Each bank is word addressable, stores a 32-bit word per location, and takes a 10-bit address, so each bank holds 1024 words. Eight banks give 8192 words = 32 KB in total. The processor address is a byte address; with 8192 words the word address is 13 bits and the byte address is 15 bits. The top bits above this are assumed zero.
-
-**Interpretation 1 (the main one): low-order interleaving.** I map consecutive words to consecutive banks. The bank number is the lowest 3 bits of the word address, and the row inside the bank is the remaining bits:
+The main choice is how words map to banks. I use low-order interleaving, which means consecutive words go to consecutive banks. The bank number is the lowest three bits of the word address and the row inside the bank is the rest:
 
 ```
 word address = byte_addr[14:2]
@@ -20,19 +18,15 @@ bank number  = word address mod 8 = byte_addr[4:2]
 row in bank  = word address / 8   = byte_addr[14:5]
 ```
 
-This is the choice that makes a unit-stride stream (word 0, 1, 2, ...) visit banks 0, 1, 2, ... in turn. A given bank is then touched only once every 8 cycles, which is more than its 6-cycle busy time, so it is always free when the stream comes back to it. This is the whole point of the design and it is what Test 1 shows.
+This is the mapping that makes a unit-stride stream (word 0, 1, 2, and so on) visit banks 0, 1, 2, and so on in turn. A given bank is then used only once every eight cycles, which is longer than its six-cycle busy time, so it is always free again by the time the stream comes back to it. This is the whole idea of the design and it is what Test 1 shows.
 
-**Interpretation 2: big-endian, always an aligned word.** The processor view is big-endian and byte addressable, but it always makes a 4-byte word access aligned to a word boundary, so the two low byte-address bits are always 00. Because every access is a whole aligned word, the big-endian byte order inside a word is never exercised by the data path; it only means that byte address 4W holds the most significant byte of word W. My model therefore stores and returns whole 32-bit words and ignores byte_addr[1:0].
+The processor view is big-endian and byte addressable, but it always makes a four-byte word access aligned to a word boundary, so the two low byte-address bits are always zero. Because every access is a whole aligned word, the big-endian byte order inside a word is never actually exercised by the data path; it only means that byte address 4W holds the most significant byte of word W. My model therefore stores and returns whole 32-bit words and ignores the two low address bits.
 
-**Interpretation 3: the 6-cycle bank and the stall signal.** When a bank latches an access it becomes busy for 6 cycles and cannot take another access during that time. If the processor tries to access a busy bank, the attempt is rejected and stall goes high. I treat stall as an early-warning signal: it is already low during the bank's last (6th) busy cycle, so an access held during that cycle is accepted on the edge at which the bank finishes its previous access. This matches the line "stall is lowered during the clock cycle at the end of which the bank will complete its previous access and be ready to accept a new access."
+For the timing of a bank, when a bank latches an access it becomes busy for six cycles and cannot take another access during that time. If the processor tries to use a busy bank the attempt is rejected and the stall signal goes high. I treat stall as an early warning: it is already low during the bank's last busy cycle, so an access that is held during that cycle is accepted on the edge at which the bank finishes its previous access. This matches the statement that stall is lowered during the clock cycle at the end of which the bank will complete its previous access and be ready to accept a new one. The memory system only rejects the access and raises stall; it does not store the rejected access, so I take it that the processor holds the same access and retries it every cycle until it is accepted. My testbench models this.
 
-**Interpretation 4: the processor holds on a stall.** The memory system only rejects the access and raises stall; it does not store the rejected access. So the processor keeps presenting the same access every cycle until it is accepted. My testbench models this.
+The results also come back in a simple way. Because the system accepts at most one access per cycle and every access takes the same fixed six cycles, the accesses finish in the same order they were started, so no reordering logic is needed; the system just reports each completion as it leaves its bank. A write commits to the bank's array when it completes, six cycles after it was accepted, and the write-complete signal is given at that time. The two required test cases are reads, but the model handles writes the same way.
 
-**Interpretation 5: completion order comes for free.** The system accepts at most one access per cycle, and every access takes the same fixed 6 cycles. So the accesses finish in the same order they were started, and no reorder buffer is needed. The system just reports each completion as it comes out of its bank.
-
-**Interpretation 6: writes.** A write commits to the bank's array when it completes, 6 cycles after it was accepted, and write_complete is pulsed at that time. The two required test cases are reads, but the model handles writes the same way.
-
-**Interpretation 7: test data.** To check reads easily, each location is seeded so that a read of byte address A returns 0xC0DE0000 OR (A / 4). So word 0 reads 0xC0DE0000, word 1 reads 0xC0DE0001, and so on. This lets the testbench check both the data and the order.
+Finally, to make the reads easy to check, each location is seeded so that a read of byte address A returns 0xC0DE0000 with (A divided by 4) in the low bits. So word 0 reads 0xC0DE0000, word 1 reads 0xC0DE0001, and so on, which lets the testbench check both the data and the order.
 
 ## 2. How the memory system works
 
