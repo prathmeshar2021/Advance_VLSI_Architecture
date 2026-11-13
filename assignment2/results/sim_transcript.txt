@@ -1,0 +1,117 @@
+VCD info: dumpfile tb_mem_system.vcd opened for output.
+
+==========================================================
+ TEST 1 unit-stride (stride 4B) : 16 reads, base byte 0x0, stride 4 bytes
+==========================================================
+  cyc 1 : ISSUE  read #0  byte_addr=0x0000  (bank 0, row 0)
+  cyc 2 : ISSUE  read #1  byte_addr=0x0004  (bank 1, row 0)
+  cyc 3 : ISSUE  read #2  byte_addr=0x0008  (bank 2, row 0)
+  cyc 4 : ISSUE  read #3  byte_addr=0x000c  (bank 3, row 0)
+  cyc 5 : ISSUE  read #4  byte_addr=0x0010  (bank 4, row 0)
+  cyc 6 : ISSUE  read #5  byte_addr=0x0014  (bank 5, row 0)
+  cyc 7 : ISSUE  read #6  byte_addr=0x0018  (bank 6, row 0)
+  cyc 8 : ISSUE  read #7  byte_addr=0x001c  (bank 7, row 0)
+  cyc 8 : COMPLETE read #0 data=0xc0de0000  (ok)
+  cyc 9 : ISSUE  read #8  byte_addr=0x0020  (bank 0, row 1)
+  cyc 9 : COMPLETE read #1 data=0xc0de0001  (ok)
+  cyc 10 : ISSUE  read #9  byte_addr=0x0024  (bank 1, row 1)
+  cyc 10 : COMPLETE read #2 data=0xc0de0002  (ok)
+  cyc 11 : ISSUE  read #10  byte_addr=0x0028  (bank 2, row 1)
+  cyc 11 : COMPLETE read #3 data=0xc0de0003  (ok)
+  cyc 12 : ISSUE  read #11  byte_addr=0x002c  (bank 3, row 1)
+  cyc 12 : COMPLETE read #4 data=0xc0de0004  (ok)
+  cyc 13 : ISSUE  read #12  byte_addr=0x0030  (bank 4, row 1)
+  cyc 13 : COMPLETE read #5 data=0xc0de0005  (ok)
+  cyc 14 : ISSUE  read #13  byte_addr=0x0034  (bank 5, row 1)
+  cyc 14 : COMPLETE read #6 data=0xc0de0006  (ok)
+  cyc 15 : ISSUE  read #14  byte_addr=0x0038  (bank 6, row 1)
+  cyc 15 : COMPLETE read #7 data=0xc0de0007  (ok)
+  cyc 16 : ISSUE  read #15  byte_addr=0x003c  (bank 7, row 1)
+  cyc 16 : COMPLETE read #8 data=0xc0de0008  (ok)
+  cyc 17 : COMPLETE read #9 data=0xc0de0009  (ok)
+  cyc 18 : COMPLETE read #10 data=0xc0de000a  (ok)
+  cyc 19 : COMPLETE read #11 data=0xc0de000b  (ok)
+  cyc 20 : COMPLETE read #12 data=0xc0de000c  (ok)
+  cyc 21 : COMPLETE read #13 data=0xc0de000d  (ok)
+  cyc 22 : COMPLETE read #14 data=0xc0de000e  (ok)
+  cyc 23 : COMPLETE read #15 data=0xc0de000f  (ok)
+  ----------------------------------------------------
+  issued 16 reads over cycles 1..16  (16 cycles)
+  stalls (rejected attempts) : 0
+  last completion at cycle   : 23
+  sustained initiation rate  : 16/16 = 1.00 words/cycle
+
+
+==========================================================
+ TEST 2 stride 16 bytes : 16 reads, base byte 0x0, stride 16 bytes
+==========================================================
+  cyc 1 : ISSUE  read #0  byte_addr=0x0000  (bank 0, row 0)
+  cyc 2 : ISSUE  read #1  byte_addr=0x0010  (bank 4, row 0)
+  cyc 3 : STALL  retry byte_addr=0x0020  (bank 0 busy)
+  cyc 4 : STALL  retry byte_addr=0x0020  (bank 0 busy)
+  cyc 5 : STALL  retry byte_addr=0x0020  (bank 0 busy)
+  cyc 6 : STALL  retry byte_addr=0x0020  (bank 0 busy)
+  cyc 7 : ISSUE  read #2  byte_addr=0x0020  (bank 0, row 1)
+  cyc 8 : ISSUE  read #3  byte_addr=0x0030  (bank 4, row 1)
+  cyc 8 : COMPLETE read #0 data=0xc0de0000  (ok)
+  cyc 9 : STALL  retry byte_addr=0x0040  (bank 0 busy)
+  cyc 9 : COMPLETE read #1 data=0xc0de0004  (ok)
+  cyc 10 : STALL  retry byte_addr=0x0040  (bank 0 busy)
+  cyc 11 : STALL  retry byte_addr=0x0040  (bank 0 busy)
+  cyc 12 : STALL  retry byte_addr=0x0040  (bank 0 busy)
+  cyc 13 : ISSUE  read #4  byte_addr=0x0040  (bank 0, row 2)
+  cyc 14 : ISSUE  read #5  byte_addr=0x0050  (bank 4, row 2)
+  cyc 14 : COMPLETE read #2 data=0xc0de0008  (ok)
+  cyc 15 : STALL  retry byte_addr=0x0060  (bank 0 busy)
+  cyc 15 : COMPLETE read #3 data=0xc0de000c  (ok)
+  cyc 16 : STALL  retry byte_addr=0x0060  (bank 0 busy)
+  cyc 17 : STALL  retry byte_addr=0x0060  (bank 0 busy)
+  cyc 18 : STALL  retry byte_addr=0x0060  (bank 0 busy)
+  cyc 19 : ISSUE  read #6  byte_addr=0x0060  (bank 0, row 3)
+  cyc 20 : ISSUE  read #7  byte_addr=0x0070  (bank 4, row 3)
+  cyc 20 : COMPLETE read #4 data=0xc0de0010  (ok)
+  cyc 21 : STALL  retry byte_addr=0x0080  (bank 0 busy)
+  cyc 21 : COMPLETE read #5 data=0xc0de0014  (ok)
+  cyc 22 : STALL  retry byte_addr=0x0080  (bank 0 busy)
+  cyc 23 : STALL  retry byte_addr=0x0080  (bank 0 busy)
+  cyc 24 : STALL  retry byte_addr=0x0080  (bank 0 busy)
+  cyc 25 : ISSUE  read #8  byte_addr=0x0080  (bank 0, row 4)
+  cyc 26 : ISSUE  read #9  byte_addr=0x0090  (bank 4, row 4)
+  cyc 26 : COMPLETE read #6 data=0xc0de0018  (ok)
+  cyc 27 : STALL  retry byte_addr=0x00a0  (bank 0 busy)
+  cyc 27 : COMPLETE read #7 data=0xc0de001c  (ok)
+  cyc 28 : STALL  retry byte_addr=0x00a0  (bank 0 busy)
+  cyc 29 : STALL  retry byte_addr=0x00a0  (bank 0 busy)
+  cyc 30 : STALL  retry byte_addr=0x00a0  (bank 0 busy)
+  cyc 31 : ISSUE  read #10  byte_addr=0x00a0  (bank 0, row 5)
+  cyc 32 : ISSUE  read #11  byte_addr=0x00b0  (bank 4, row 5)
+  cyc 32 : COMPLETE read #8 data=0xc0de0020  (ok)
+  cyc 33 : STALL  retry byte_addr=0x00c0  (bank 0 busy)
+  cyc 33 : COMPLETE read #9 data=0xc0de0024  (ok)
+  cyc 34 : STALL  retry byte_addr=0x00c0  (bank 0 busy)
+  cyc 35 : STALL  retry byte_addr=0x00c0  (bank 0 busy)
+  cyc 36 : STALL  retry byte_addr=0x00c0  (bank 0 busy)
+  cyc 37 : ISSUE  read #12  byte_addr=0x00c0  (bank 0, row 6)
+  cyc 38 : ISSUE  read #13  byte_addr=0x00d0  (bank 4, row 6)
+  cyc 38 : COMPLETE read #10 data=0xc0de0028  (ok)
+  cyc 39 : STALL  retry byte_addr=0x00e0  (bank 0 busy)
+  cyc 39 : COMPLETE read #11 data=0xc0de002c  (ok)
+  cyc 40 : STALL  retry byte_addr=0x00e0  (bank 0 busy)
+  cyc 41 : STALL  retry byte_addr=0x00e0  (bank 0 busy)
+  cyc 42 : STALL  retry byte_addr=0x00e0  (bank 0 busy)
+  cyc 43 : ISSUE  read #14  byte_addr=0x00e0  (bank 0, row 7)
+  cyc 44 : ISSUE  read #15  byte_addr=0x00f0  (bank 4, row 7)
+  cyc 44 : COMPLETE read #12 data=0xc0de0030  (ok)
+  cyc 45 : COMPLETE read #13 data=0xc0de0034  (ok)
+  cyc 50 : COMPLETE read #14 data=0xc0de0038  (ok)
+  cyc 51 : COMPLETE read #15 data=0xc0de003c  (ok)
+  ----------------------------------------------------
+  issued 16 reads over cycles 1..44  (44 cycles)
+  stalls (rejected attempts) : 28
+  last completion at cycle   : 51
+  sustained initiation rate  : 16/44 = 0.36 words/cycle
+
+==========================================================
+ RESULT: all reads returned correct data, in order. PASS
+==========================================================
+tb/tb_mem_system.v:211: $finish called at 815000 (1ps)
