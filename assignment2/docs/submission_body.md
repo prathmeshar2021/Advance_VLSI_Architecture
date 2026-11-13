@@ -83,6 +83,10 @@ sustained initiation rate  : 16/16 = 1.00 words/cycle
 
 All 16 reads are accepted in 16 back-to-back cycles with no stalls, and every value is correct and in order. This is the full bandwidth the system is designed for: one word per cycle.
 
+Figure 1 shows the simulation waveform for this run.
+
+![Figure 1. Test 1 (unit stride). req is high every cycle and stall stays low; byte_addr steps through consecutive words and bank_sel cycles through all eight banks, so read_complete asserts once per cycle and read_data steps c0de0000, c0de0001, and so on. The system runs at one word per cycle.](results/wave_test1.png){width=6.5in}
+
 ### Test 2 (stride of 16 bytes)
 
 A stride of 16 bytes is 4 words. The bank number is (word address mod 8), and the word addresses are 0, 4, 8, 12, 16, ..., so the banks used are 0, 4, 0, 4, 0, 4, ... Only two of the eight banks are ever used, and each is needed every second access. Since a bank is busy for 6 cycles, the stream cannot keep up and stalls badly.
@@ -110,6 +114,10 @@ sustained initiation rate  : 16/44 = 0.36 words/cycle
 ```
 
 After the first pair, the system settles into a steady pattern of two reads issued, then four stall cycles, i.e. two accesses every six cycles. That is 2/6 = 0.33 words per cycle in steady state; over the whole run it averages 16/44 = 0.36 words per cycle. The data is still correct and in order; only the speed drops.
+
+Figure 2 shows the simulation waveform for this run.
+
+![Figure 2. Test 2 (16-byte stride). bank_sel only ever takes the values 0 and 4, so the same two banks are reused; stall is high for four of every six cycles while a busy bank is waited on. The reads still complete in order (read_data c0de0000, c0de0004, ...) but far more slowly.](results/wave_test2.png){width=6.5in}
 
 ### Comparison
 
